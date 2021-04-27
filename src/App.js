@@ -1,24 +1,18 @@
-import logo from './logo.svg';
-import './App.css';
+import { Fragment } from 'react';
+import Login from './pages/Login';
+import GlobalStyle from './static/globalstyle';
+import { ThemeProvider } from 'styled-components';
+import theme from './static/theme';
+import Routes from './routes';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Fragment>
+      <ThemeProvider theme={theme}>
+        <GlobalStyle />
+        <Routes />
+      </ThemeProvider>
+    </Fragment>
   );
 }
 
