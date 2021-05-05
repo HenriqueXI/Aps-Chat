@@ -24,14 +24,14 @@ export const Background = styled.div`
   height: 100%;
   top: 0;
   left: 0;
-  background: url(${background}) cover;
+  background: url(${background});
 `;
 
 export const Tress = styled.div`
   position: absolute;
   width: 100%;
   height: 100%;
-  background: url(${Trees}) no-repeat cover;
+  background: url(${Trees}) no-repeat;
   top: 20%;
   left: 25%;
 `;
@@ -77,4 +77,11 @@ export const InputDiv = styled.div`
         color: #ffffff;
         background: ${props => props.theme.default.secondary}
     }
+
+    p{
+        font-size: 1rem;
+        font-family: 'Times New Roman', Times, serif;
+    }
+
+
 `;
