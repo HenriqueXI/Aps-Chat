@@ -1,5 +1,5 @@
 import React from 'react';
-
+import { Link } from 'react-router-dom'
 import { Background, Container, LeftContainer, RightContainer, Tress, InputDiv } from './styles';
 
 function Login() {
@@ -17,6 +17,7 @@ function Login() {
                     <input type="password" name="Senha" placeholder="Senha" />
                     <br/>
                     <button>Entrar</button>
+                    <p>Não possui cadastro? <Link to='/register'>Cadastrar</Link></p>
                 </InputDiv>
 
             </RightContainer>
