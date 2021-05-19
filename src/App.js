@@ -1,5 +1,4 @@
 import { Fragment } from 'react';
-import Login from './pages/Login';
 import GlobalStyle from './static/globalstyle';
 import { ThemeProvider } from 'styled-components';
 import theme from './static/theme';

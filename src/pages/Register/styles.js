@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import background from '../../static/images/background-login.png';
 import Tress from '../../static/images/Trees.jpeg';
+import { Form } from '../../components/Form';
 
 
 export const RightContainerRegister = styled.div`
@@ -9,7 +10,7 @@ export const RightContainerRegister = styled.div`
   background: ${props => props.theme.default.background}
 `;
 
-export const InputsRegisterDiv = styled.div`
+export const InputsRegisterDiv = styled(Form)`
   top: 50%;
   width: 100%;
   height: 100%;

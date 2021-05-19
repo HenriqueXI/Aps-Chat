@@ -7,6 +7,7 @@ import {
 
 import Login from "../pages/Login";
 import Chat from "../pages/Chat";
+import Register from "../pages/Register";
 
 export default function Routes() {
     return (
@@ -15,8 +16,11 @@ export default function Routes() {
                 <Route path='/' exact >
                     <Login />
                 </Route>
-                <Route path='/chat' exact >
+                <Route path='/chat'>
                     <Chat />
+                </Route>
+                <Route path='/register'>
+                    <Register />
                 </Route>
             </Switch>
         </Router>

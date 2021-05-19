@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { Input, Form } from '../../components/Form';
 
 export const Container = styled.div`
     width: 100%;
@@ -34,7 +35,7 @@ export const MainHeader = styled.div`
     flex-direction: column;
 `;
 
-export const SearchContainer = styled.div`
+export const SearchContainer = styled(Form)`
     width: 100%;
     height: 60px;
     background: ${props => props.theme.default.search.background};
@@ -46,7 +47,7 @@ export const SearchContainer = styled.div`
     z-index: 3;
 `;
 
-export const SearchInput = styled.input`
+export const SearchInput = styled(Input)`
     border: none;
     border-radius: 8px;
     background: ${props => props.theme.default.background};
@@ -65,23 +66,24 @@ export const UserInformation = styled.div`
 export const MainBody = styled.div`
     width: 100%;
     height: 85%;
+    position: relative;
 `;
 
 export const MessagesHolder = styled.div`
     width: 100%;
-    height: 94%;
     overflow: auto;
 `;
 
-export const SenderContainer = styled.div`
-    width: 100%;
-    height: 6%;
+export const SenderContainer = styled(Form)`
     display: flex;
     justify-content: center;
     align-items: center;
+    position: absolute;
+    bottom: 10px;
+    width: 100%;
 `;
 
-export const MessageInput = styled.input`
+export const MessageInput = styled(Input)`
     width: 80%;
     height: 20px;
     background: ${props => props.theme.default.search.background};
