@@ -8,7 +8,7 @@ function UsersList() {
     const [ users, setUsers ] = useState([]);
 
     useEffect(() => {
-        api.get('/users').then(users_list => {
+        api.get('/users', { headers: { Authorization: `JWT ${localStorage.getItem('jwt')}` } }).then(users_list => {
             setUsers(last_users => {
                 return [...users_list, ...last_users]
             });

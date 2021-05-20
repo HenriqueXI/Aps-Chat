@@ -27,7 +27,7 @@ import useRecorder from '../../hooks/useRecorder';
 
 function Chat() {
   
-  let [audioURL, isRecording, startRecording, stopRecording] = useRecorder();
+  let [audioBLOB, isRecording, startRecording, stopRecording] = useRecorder();
   const [messages, setMessages] = useState([{"user_name": "alexandre", "text": "teste"}, 
                                             {"user_name": "richard", "text": "teste3"},
                                             {"user_name": "richard", "text": "teste3324"},
@@ -38,15 +38,21 @@ function Chat() {
                                           ]);
 
   useEffect(() => {
-    api.get('/messages/users?email=', { headers: { Authorization: `Bearer ${localStorage.getItem('jwt')}` } }).then(newMessages => {
+    api.get('/messages/users?email=', { headers: { Authorization: `JWT ${localStorage.getItem('jwt')}` } }).then(newMessages => {
       setMessages(lastMessages => {
         return [...lastMessages, ...newMessages];
       });
     });
   }, [])
+
+  useEffect(() => {
+    if(audioBLOB){
+      console.log(audioBLOB)
+    }
+  }, [audioBLOB])
     
   const send_message = async ({ message }) => {
-    const new_message = await api.post('/messages', { "text": message, "sender": "", "recipient": "" }, { headers: { Authorization: `Bearer ${localStorage.getItem('jwt')}` } });
+    const new_message = await api.post('/messages', { "text": message, "sender": "", "recipient": "" }, { headers: { Authorization: `JWT ${localStorage.getItem('jwt')}` } });
     if(new_message.status == 200){
       console.log(message);
       setMessages(lastMessages => {return [...lastMessages, {"user_name": localStorage.getItem('user'), "text": message}]});
