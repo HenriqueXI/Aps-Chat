@@ -1,7 +1,8 @@
-import React, { useCallback, useMemo, useState, useRef, useEffect } from 'react';
-import useWebSocket, { ReadyState } from 'react-use-websocket';
+import React, { useCallback, useState, useEffect } from 'react';
 import MyMessage from '../../components/MyMessage';
 import TheirMessage from '../../components/TheirMessage';
+import Mic from '@material-ui/icons/Mic';
+import Stop from '@material-ui/icons/MicOff';
 
 import { 
   Container, 
@@ -22,8 +23,11 @@ import UsersList from '../../components/UsersList';
 import User from '../../components/User';
 import api from '../../api';
 
+import useRecorder from '../../hooks/useRecorder';
+
 function Chat() {
   
+  let [audioURL, isRecording, startRecording, stopRecording] = useRecorder();
   const [messages, setMessages] = useState([{"user_name": "alexandre", "text": "teste"}, 
                                             {"user_name": "richard", "text": "teste3"},
                                             {"user_name": "richard", "text": "teste3324"},
@@ -34,25 +38,24 @@ function Chat() {
                                           ]);
 
   useEffect(() => {
-    // api.get('/messages/users?email=richard.filho@seberino.com.br').then(newMessages => {
-    //   setMessages(lastMessages => {
-    //     return [...lastMessages, ...newMessages];
-    //   });
-    // });
+    api.get('/messages/users?email=', { headers: { Authorization: `Bearer ${localStorage.getItem('jwt')}` } }).then(newMessages => {
+      setMessages(lastMessages => {
+        return [...lastMessages, ...newMessages];
+      });
+    });
   }, [])
     
-  const send_message = ({ message }) => {
-    // const new_message = await api.post('/messages', { "text": message, "sender": "", "recipient": "" });
-    // if(new_message.status == 200){
-    //   return new_message;
-    // }
-    console.log(message)
+  const send_message = async ({ message }) => {
+    const new_message = await api.post('/messages', { "text": message, "sender": "", "recipient": "" }, { headers: { Authorization: `Bearer ${localStorage.getItem('jwt')}` } });
+    if(new_message.status == 200){
+      console.log(message);
+      setMessages(lastMessages => {return [...lastMessages, {"user_name": localStorage.getItem('user'), "text": message}]});
+    }
     
   };
 
-  const handle_send_message = useCallback(({ message }) => {
-    // sendMessage(message)
-    setMessages(lastMessages => {return [...lastMessages, {"user_name": localStorage.getItem('user'), "text": message}]});
+  const handle_send_message = useCallback(async ({ message }) => {
+    await send_message(message);
   }, [])
 
   const handle_search = ({ search }) => {
@@ -88,6 +91,7 @@ function Chat() {
               </MessagesHolder>
               <SenderContainer onSubmit={handle_send_message}>
                 <MessageInput name={"message"} placeholder="Enviar mensagem..."/>
+                {!isRecording ? <Mic onClick={startRecording}/> : <Stop onClick={stopRecording} />}
               </SenderContainer>
             </MainBody>
           </Main>
