@@ -1,5 +1,7 @@
 import React, { useCallback, useMemo, useState, useRef, useEffect } from 'react';
 import useWebSocket, { ReadyState } from 'react-use-websocket';
+import MyMessage from '../../components/MyMessage';
+import TheirMessage from '../../components/TheirMessage';
 
 import { 
   Container, 
@@ -22,14 +24,21 @@ import api from '../../api';
 
 function Chat() {
   
-  const [messages, setMessages] = useState([]);
+  const [messages, setMessages] = useState([{"user_name": "alexandre", "text": "teste"}, 
+                                            {"user_name": "richard", "text": "teste3"},
+                                            {"user_name": "richard", "text": "teste3324"},
+                                            {"user_name": "alexandre", "text": "teste234234"},
+                                            {"user_name": "richard", "text": "te"},
+                                            {"user_name": "alexandre", "text": "tee3"},
+                                            {"user_name": "richard", "text": "te343423ste3"},
+                                          ]);
 
   useEffect(() => {
-    api.get('/messages/users?email=richard.filho@seberino.com.br').then(newMessages => {
-      setMessages(lastMessages => {
-        return [...lastMessages, ...newMessages];
-      });
-    });
+    // api.get('/messages/users?email=richard.filho@seberino.com.br').then(newMessages => {
+    //   setMessages(lastMessages => {
+    //     return [...lastMessages, ...newMessages];
+    //   });
+    // });
   }, [])
     
   const send_message = ({ message }) => {
@@ -43,8 +52,7 @@ function Chat() {
 
   const handle_send_message = useCallback(({ message }) => {
     // sendMessage(message)
-    console.log(message);
-    setMessages(lastMessages => {return [...lastMessages, message]});
+    setMessages(lastMessages => {return [...lastMessages, {"user_name": localStorage.getItem('user'), "text": message}]});
   }, [])
 
   const handle_search = ({ search }) => {
@@ -70,7 +78,11 @@ function Chat() {
               <MessagesHolder>
                 {
                   messages.length > 0
-                  ? messages.map(message => { return <div>{message}</div> })
+                  ? messages.map(message => { 
+                      return localStorage.getItem('user') === message.user_name
+                              ? <TheirMessage message={message.text} />  
+                              : <MyMessage message={message.text}/>                 
+                    })
                   : null
                 }
               </MessagesHolder>

@@ -10,11 +10,11 @@ function Register({ history }) {
   const handle_register = async ({ name, email, password, last_name }) => {
     const jwt = await api.post('/users', {"firstName": name, "lastName": last_name, email, password})
     if(jwt.status == 200){
-      return jwt.data;
+      localStorage.setItem('jwt', jwt.data.token);
+      history.push({
+        pathname: `/chat`
+      });
     }
-    history.push({
-      pathname: `/chat`
-    });
   }
 
   return(

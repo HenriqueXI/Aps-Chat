@@ -6,24 +6,14 @@ import api from '../../api';
 
 function Login({ history }) {
 
-    const make_login = async (email, password) => {
-        if(email && password){
-            const jwt = await api.post('/users/login', { email, password });
-            if(jwt.status == 200){
-                return jwt;
-            }
-        }
-    }
-
-    const handle_login = ({ email, password }) => { 
-        // make_login(email, password).then(jwt => {
-        //     localStorage.setItem('jwt', jwt.data);
-        //     console.log(jwt);
-
-        // })
+    const handle_login = async ({ email, password }) => { 
+        // const jwt = await api.post('/users/login', { email, password });
+        // if(jwt.status == 200){
+        //     localStorage.setItem('jwt', jwt.data.token);
+        // }
         history.push({
             pathname: '/chat'
-        })
+        });
     }
 
     return(
