@@ -71,7 +71,8 @@ export const MainBody = styled.div`
 
 export const MessagesHolder = styled.div`
     width: 100%;
-    overflow: auto;
+    height: 100%;
+    overflow: scroll;
 `;
 
 export const SenderContainer = styled(Form)`

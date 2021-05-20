@@ -4,7 +4,7 @@ import { Input } from '../../components/Form';
 import { Background, Container, LeftContainer, RightContainer, Tress, InputDiv } from './styles';
 import api from '../../api';
 
-function Login() {
+function Login({ history }) {
 
     const make_login = async (email, password) => {
         if(email && password){
@@ -16,7 +16,14 @@ function Login() {
     }
 
     const handle_login = ({ email, password }) => { 
-        const jwt = make_login(email, password);
+        // make_login(email, password).then(jwt => {
+        //     localStorage.setItem('jwt', jwt.data);
+        //     console.log(jwt);
+
+        // })
+        history.push({
+            pathname: '/chat'
+        })
     }
 
     return(

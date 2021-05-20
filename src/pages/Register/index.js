@@ -7,19 +7,14 @@ import api from '../../api';
 
 function Register({ history }) {
 
-  const make_register = async ({ name, email, password, last_name }) => {
+  const handle_register = async ({ name, email, password, last_name }) => {
     const jwt = await api.post('/users', {"firstName": name, "lastName": last_name, email, password})
     if(jwt.status == 200){
-      return jwt;
+      return jwt.data;
     }
-  }
-
-  const handle_register = ({ name, email, password, last_name }) => {
-    make_register(name, email, password, last_name).then(res => {
-      if(res){
-        // navigate to main page
-      }
-    })
+    history.push({
+      pathname: `/chat`
+    });
   }
 
   return(
@@ -30,7 +25,7 @@ function Register({ history }) {
       </LeftContainer>
       <RightContainerRegister>
 
-        <InputsRegisterDiv>
+        <InputsRegisterDiv onSubmit={handle_register}>
           <h1>Register</h1>
           <Input type="text" name="name" placeholder="Nome" />
           <Input type="text" name="last_name" placeholder="Sobrenome" />

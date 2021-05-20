@@ -10,18 +10,19 @@ import Chat from "../pages/Chat";
 import Register from "../pages/Register";
 
 export default function Routes() {
+
+    const Rota = ({ path: Path, component: Component, ...rest }) => (
+        <Route Path render={props => (
+            <Component {...props} {...rest}/>
+        )}/>
+    )
+
     return (
         <Router>
             <Switch>
-                <Route path='/' exact >
-                    <Login />
-                </Route>
-                <Route path='/chat'>
-                    <Chat />
-                </Route>
-                <Route path='/register'>
-                    <Register />
-                </Route>
+                <Rota path="/" exact component={Login} />
+                <Rota path="/chat" component={Chat} />
+                <Rota path="/register" component={Register} />
             </Switch>
         </Router>
     );
