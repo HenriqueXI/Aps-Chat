@@ -38,7 +38,7 @@ function Chat() {
                                           ]);
 
   useEffect(() => {
-    api.get('/messages/users?email=', { headers: { Authorization: `JWT ${localStorage.getItem('jwt')}` } }).then(newMessages => {
+    api.get('/messages/users?email=', { headers: { Authorization: `Bearer ${localStorage.getItem('jwt')}` } }).then(newMessages => {
       setMessages(lastMessages => {
         return [...lastMessages, ...newMessages];
       });
@@ -52,7 +52,7 @@ function Chat() {
   }, [audioBLOB])
     
   const send_message = async ({ message }) => {
-    const new_message = await api.post('/messages', { "text": message, "sender": "", "recipient": "" }, { headers: { Authorization: `JWT ${localStorage.getItem('jwt')}` } });
+    const new_message = await api.post('/messages', { "text": message, "sender": "", "recipient": "" }, { headers: { Authorization: `Bearer ${localStorage.getItem('jwt')}` } });
     if(new_message.status == 200){
       console.log(message);
       setMessages(lastMessages => {return [...lastMessages, {"user_name": localStorage.getItem('user'), "text": message}]});
