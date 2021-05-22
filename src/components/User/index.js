@@ -3,16 +3,12 @@ import api from '../../api';
 
 import { Container, Avatar, Users } from './styles';
 
-function UsersList() {
-
-    // useEffect(() => {
-    //     api.get('')
-    // }, [])
+function UsersList({ user }) {
 
     return(
         <Container>
-            <Avatar></Avatar>
-            <p></p>
+            <Avatar src={user?.picture?.url}/>
+            <p>{user.firstName}</p>
         </Container>
     );
 }

@@ -9,10 +9,15 @@ function Login({ history }) {
     const handle_login = async ({ email, password }) => { 
         const jwt = await api.post('/users/login', { email, password });
         if(jwt.status == 200){
-            localStorage.setItem('jwt', jwt.data.token);
-            history.push({
-                pathname: '/chat'
-            });
+            const user_info = api.get('/users/', { headers: { Authorization: `Bearer ${jwt.data.token}` } }).then(user => {
+                if(user.status == 200){        
+                    localStorage.setItem('jwt', jwt.data.token);
+                    localStorage.setItem('user', user_info.data);
+                    history.push({
+                        pathname: '/chat'
+                    });
+                }
+            })
         }
     }
 

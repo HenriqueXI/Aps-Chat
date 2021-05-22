@@ -28,22 +28,20 @@ import useRecorder from '../../hooks/useRecorder';
 function Chat() {
   
   let [audioBLOB, isRecording, startRecording, stopRecording] = useRecorder();
-  const [messages, setMessages] = useState([{"user_name": "alexandre", "text": "teste"}, 
-                                            {"user_name": "richard", "text": "teste3"},
-                                            {"user_name": "richard", "text": "teste3324"},
-                                            {"user_name": "alexandre", "text": "teste234234"},
-                                            {"user_name": "richard", "text": "te"},
-                                            {"user_name": "alexandre", "text": "tee3"},
-                                            {"user_name": "richard", "text": "te343423ste3"},
-                                          ]);
+  const [messages, setMessages] = useState([]);
+  const [activeChat, setActiveChat] = useState({});
 
   useEffect(() => {
-    api.get('/messages/users?email=', { headers: { Authorization: `Bearer ${localStorage.getItem('jwt')}` } }).then(newMessages => {
-      setMessages(lastMessages => {
-        return [...lastMessages, ...newMessages];
+    if(activeChat){
+      api.get(`/messages/users?email=${activeChat.email}`, { headers: { Authorization: `Bearer ${localStorage.getItem('jwt')}` } }).then(newMessages => {
+        if(newMessages.status == 200){
+          setMessages(lastMessages => {
+            return [...lastMessages, ...newMessages.data];
+          });
+        }
       });
-    });
-  }, [])
+    }
+  }, [activeChat]);
 
   useEffect(() => {
     if(audioBLOB){
@@ -52,12 +50,10 @@ function Chat() {
   }, [audioBLOB])
     
   const send_message = async ({ message }) => {
-    const new_message = await api.post('/messages', { "text": message, "sender": "", "recipient": "" }, { headers: { Authorization: `Bearer ${localStorage.getItem('jwt')}` } });
+    const new_message = await api.post('/messages', { "text": message, "sender": JSON.parse(localStorage.getItem('user')).email, "recipient": activeChat.email }, { headers: { Authorization: `Bearer ${localStorage.getItem('jwt')}` } });
     if(new_message.status == 200){
-      console.log(message);
-      setMessages(lastMessages => {return [...lastMessages, {"user_name": localStorage.getItem('user'), "text": message}]});
+      setMessages(lastMessages => {return [...lastMessages, { "text": message, "sender": JSON.parse(localStorage.getItem('user')).email, "recipient": activeChat.email }]});
     }
-    
   };
 
   const handle_send_message = useCallback(async ({ message }) => {
@@ -72,7 +68,7 @@ function Chat() {
       <Container>
           <MinimifiedOptions></MinimifiedOptions>
           <Users>
-            <UsersList />
+            <UsersList setChat={setActiveChat} />
           </Users>
           <Main>
             <MainHeader>
@@ -80,7 +76,7 @@ function Chat() {
                 <SearchInput name={"search"} placeholder="Pesquise por usuários..."/>
               </SearchContainer>
               <UserInformation>
-                  <User/>
+                  <User user={activeChat} />
               </UserInformation>
             </MainHeader>
             <MainBody>
@@ -88,9 +84,9 @@ function Chat() {
                 {
                   messages.length > 0
                   ? messages.map(message => { 
-                      return localStorage.getItem('user') === message.user_name
-                              ? <TheirMessage message={message.text} />  
-                              : <MyMessage message={message.text}/>                 
+                      return JSON.parse(localStorage.getItem('user')).email === message.sender.email
+                              ? <TheirMessage message={message} />  
+                              : <MyMessage message={message}/>                 
                     })
                   : null
                 }

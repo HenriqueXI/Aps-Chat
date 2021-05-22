@@ -10,11 +10,12 @@ export const Lista = styled.ul`
 export const Users = styled.li`
     display: flex;
     align-items: center;
+    color: white;
 `;
 
-export const Avatar = styled.div`
-    width: 30px;
-    height: 30px;
+export const Avatar = styled.img`
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
     border: 1px solid black;
     margin-right: 5px;
