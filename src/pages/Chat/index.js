@@ -29,15 +29,18 @@ import useRecorder from '../../hooks/useRecorder';
 function Chat() {
   
   let [audioBLOB, isRecording, startRecording, stopRecording] = useRecorder();
-  const [socketUrl, setSocketUrl] = useState('wss://echo.websocket.org');
+  const [socketUrl, setSocketUrl] = useState('wss://localhost:8080/app/channel/alexandreramos469@gmail.com');
   const [messages, setMessages] = useState([]);
   const [activeChat, setActiveChat] = useState({});
 
-  const {
+  const { 
     sendMessage,
     lastMessage,
     readyState,
   } = useWebSocket(socketUrl);
+
+  const handleClickChangeSocketUrl = useCallback(() =>
+   setSocketUrl(`wss://localhost:8080/app/channel/${activeChat.email}`), [activeChat]);
 
   useEffect(() => {
     if(activeChat){
